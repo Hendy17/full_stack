@@ -1,0 +1,25 @@
+.form-container {
+  background-color: white;
+  border-radius: var(--border-radius);
+  padding: var(--padding);
+  margin: var(--margin);
+  @include box-shadow;
+}
+
+.mat-checkbox {
+  margin-bottom: var(--margin);
+}
+
+.form-group {
+  margin-bottom: var(--margin);
+}
+
+.radio-group {
+  display: flex;
+  gap: var(--padding);
+  margin-bottom: var(--margin);
+}
+
+.radio-group label {
+  cursor: pointer;
+}

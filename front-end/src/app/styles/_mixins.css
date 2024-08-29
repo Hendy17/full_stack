@@ -1,0 +1,13 @@
+@mixin button-style {
+  background-color: var(--primary-color);
+  color: white;
+  padding: var(--padding);
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+@mixin box-shadow {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}

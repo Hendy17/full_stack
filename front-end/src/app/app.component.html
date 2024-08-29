@@ -1,0 +1,45 @@
+<app-header></app-header> <!-- Cabeçalho da aplicação -->
+
+<main>
+  <!-- Formulário para gerenciar tarefas -->
+  <div class="task-form">
+    <label for="task-title">Título da Tarefa:</label>
+    <input id="task-title" [(ngModel)]="taskTitle" placeholder="Digite o título da tarefa" />
+
+    <label for="task-desc">Descrição da Tarefa:</label>
+    <textarea id="task-desc" [(ngModel)]="taskDescription" placeholder="Digite a descrição da tarefa"></textarea>
+
+    <div class="button-group">
+      <button (click)="addTask()">Adicionar Tarefa</button>      
+    </div>
+  </div>
+
+  <!-- Histórico de Atividades -->
+  <div class="task-history">
+    <h2>Histórico de Atividades</h2>
+    <div *ngFor="let task of tasks; let i = index" class="task-item" [class]="task.status">
+      <h3>{{ task.title }}</h3>
+      <p>{{ task.description }}</p>
+
+      <!-- Checkboxes para definir o status -->
+      <label>
+        <input type="radio" name="status-{{i}}" [checked]="task.status === 'concluida'" (click)="updateTaskStatus(i, 'concluida')" />
+        Concluída
+      </label>
+      <label>
+        <input type="radio" name="status-{{i}}" [checked]="task.status === 'em-andamento'" (click)="updateTaskStatus(i, 'em-andamento')" />
+        Em Andamento
+      </label>
+      <label>
+        <input type="radio" name="status-{{i}}" [checked]="task.status === 'nao-concluida'" (click)="updateTaskStatus(i, 'nao-concluida')" />
+        Não Concluída
+      </label>
+
+      <div class="button-group">
+        <button (click)="restartTask(i)">Reiniciar Tarefa</button>
+        <button (click)="editTask(i)">Editar Tarefa</button>
+        <button (click)="deleteTask(i)">Deletar Tarefa</button>
+      </div>
+    </div>
+  </div>
+</main>
