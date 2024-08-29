@@ -1,65 +1,61 @@
-import { Component } from '@angular/core';
-import { HeaderComponent } from './header/header.component';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+import { HeaderComponent } from './header/header.component'; // Certifique-se de que o caminho esteja correto
+import { TaskService } from '../task.service'; // Importa o serviço de tarefas
+
+interface Task {
+  id: number;
+  title: string;
+  description: string;
+  status: 'concluida' | 'em-andamento' | 'nao-concluida';
+}
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
   standalone: true,
-  imports: [HeaderComponent, FormsModule, CommonModule],
+  imports: [HeaderComponent, FormsModule],  // Certifique-se de que HeaderComponent está listado aqui
 })
-export class AppComponent {
-  title = 'my-angular-project';
-
-  // Array para armazenar as tarefas com o status
-  tasks: { title: string; description: string; status: 'concluida' | 'em-andamento' | 'nao-concluida' }[] = [
-    {
-      title: 'Revisão de Procedimentos de Qualidade',
-      description: 'Revisar e atualizar os procedimentos operacionais padrão (POP) da empresa laboratorial.',
-      status: 'nao-concluida',
-    },
-    {
-      title: 'Inventário de Reagentes',
-      description: 'Realizar inventário de todos os reagentes em estoque e atualizar o sistema de gerenciamento de inventário.',
-      status: 'em-andamento',
-    },
-    {
-      title: 'Treinamento de Segurança',
-      description: 'Organizar e ministrar treinamento de segurança para todos os funcionários do laboratório.',
-      status: 'concluida',
-    },
-    {
-      title: 'Manutenção de Equipamentos',
-      description: 'Programar e executar a manutenção preventiva dos principais equipamentos de laboratório.',
-      status: 'nao-concluida',
-    },
-  ];
-
+export class AppComponent implements OnInit {
+  tasks: Task[] = [];
   taskTitle = '';
   taskDescription = '';
 
+  constructor(private taskService: TaskService) {}
+
+  ngOnInit(): void {
+    this.loadTasks();
+  }
+
+  loadTasks() {
+    this.taskService.getTasks().subscribe((tasks) => (this.tasks = tasks));
+  }
+
   addTask() {
     if (this.taskTitle && this.taskDescription) {
-      this.tasks.push({
-        title: this.taskTitle,
-        description: this.taskDescription,
-        status: 'nao-concluida', // Nova tarefa começa como "Não Concluída"
+      this.taskService.addTask({ title: this.taskTitle, description: this.taskDescription }).subscribe((newTask) => {
+        this.tasks.push(newTask);
+        this.clearForm();
       });
-      this.clearForm();
     }
   }
 
-  // Método para reiniciar a tarefa
-  restartTask(index: number) {
-    alert(`Tarefa "${this.tasks[index].title}" foi reiniciada!`);
-    this.tasks[index].status = 'em-andamento'; // Reconfigura o status da tarefa para "Em Andamento"
+  updateTask(task: Task) {
+    this.taskService.updateTask(task).subscribe();
   }
 
-  // Atualizar o status da tarefa
   updateTaskStatus(index: number, status: 'concluida' | 'em-andamento' | 'nao-concluida') {
-    this.tasks[index].status = status;
+    const task = this.tasks[index];
+    task.status = status;
+    this.updateTask(task);
+  }
+
+  restartTask(index: number) {
+    const task = this.tasks[index];
+    this.taskService.restartTask(task.id).subscribe((updatedTask) => {
+      this.tasks[index] = updatedTask;
+    });
   }
 
   editTask(index: number) {
@@ -69,7 +65,10 @@ export class AppComponent {
   }
 
   deleteTask(index: number) {
-    this.tasks.splice(index, 1);
+    const task = this.tasks[index];
+    this.taskService.deleteTask(task.id).subscribe(() => {
+      this.tasks.splice(index, 1);
+    });
   }
 
   clearForm() {
