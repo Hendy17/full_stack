@@ -4,7 +4,7 @@ import bodyParser from 'body-parser';
 import tasksRouter from './routes/tasks';
 
 const app = express();
-const port = 3000;
+const port = 3232;
 
 app.use(cors());
 app.use(bodyParser.json());

@@ -5,7 +5,7 @@ import { AppComponent } from './app/app.component';
 
 bootstrapApplication(AppComponent, {
   providers: [
-    provideHttpClient(),
+    provideHttpClient(),  // Isso deve garantir que o HttpClient seja fornecido corretamente
     provideAnimations()
   ],
 }).catch(err => console.error(err));

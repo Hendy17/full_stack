@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { HeaderComponent } from './header/header.component'; // Certifique-se de que o caminho esteja correto
-import { TaskService } from '../task.service'; // Importa o serviço de tarefas
+import { CommonModule } from '@angular/common'; // Importe o CommonModule
+import { HeaderComponent } from './header/header.component';
+import { TaskService } from '../task.service';
 
 interface Task {
   id: number;
@@ -15,7 +16,7 @@ interface Task {
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
   standalone: true,
-  imports: [HeaderComponent, FormsModule],  // Certifique-se de que HeaderComponent está listado aqui
+  imports: [HeaderComponent, FormsModule, CommonModule],  // Certifique-se de incluir CommonModule aqui
 })
 export class AppComponent implements OnInit {
   tasks: Task[] = [];
