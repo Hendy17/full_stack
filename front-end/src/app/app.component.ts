@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common'; // Importe o CommonModule
-import { HeaderComponent } from './header/header.component';
 import { TaskService } from '../task.service';
+import { HeaderComponent } from './header/header.component';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms'; // Importa o FormsModule
 
 interface Task {
   id: number;
