@@ -114,6 +114,73 @@ Este é o projeto do back-end da aplicação full stack.
 
 * PUT /api/tasks/:id/restart - Reinicia o status de uma tarefa.
 
-* DELETE /api/tasks/:id - Remove uma tarefa.
 
+# Autenticação com JWT - Projeto Full Stack
+
+Este projeto implementa uma funcionalidade de autenticação de usuário utilizando JSON Web Tokens (JWT). O objetivo é proteger as rotas da API e garantir que apenas usuários autenticados possam acessar determinados recursos.
+
+## Funcionalidades
+
+1. **Registro de Usuário**
+   - Rota: `POST /api/auth/register`
+   - Descrição: Registra um novo usuário no sistema.
+   - Requisição:
+     ```json
+     {
+       "username": "seu_username",
+       "password": "sua_senha"
+     }
+     ```
+   - Resposta:
+     ```json
+     {
+       "message": "Usuário registrado com sucesso"
+     }
+     ```
+
+2. **Login de Usuário**
+   - Rota: `POST /api/auth/login`
+   - Descrição: Autentica um usuário e retorna um token JWT.
+   - Requisição:
+     ```json
+     {
+       "username": "seu_username",
+       "password": "sua_senha"
+     }
+     ```
+   - Resposta:
+     ```json
+     {
+       "token": "seu_token_jwt"
+     }
+     ```
+
+3. **Proteção de Rotas com JWT**
+   - As rotas protegidas utilizam o middleware de autenticação para validar o token JWT.
+   - Exemplo de rota protegida:
+     - `GET /api/tasks` - Requer o cabeçalho `Authorization: Bearer seu_token_jwt`
+
+## Como Funciona
+
+1. **Registro de Usuário**: Quando um novo usuário se registra, a senha é criptografada usando `bcrypt` e armazenada no banco de dados.
+
+2. **Login de Usuário**: Durante o login, a senha fornecida é comparada com a senha criptografada armazenada. Se a autenticação for bem-sucedida, um token JWT é gerado e retornado ao usuário.
+
+3. **Proteção de Rotas**: O token JWT deve ser incluído no cabeçalho `Authorization` para acessar rotas protegidas. O middleware verifica se o token é válido antes de permitir o acesso.
+
+## Exemplo de Uso com Postman
+
+### Registro de Usuário
+
+1. Abra o Postman.
+2. Selecione `POST` e insira a URL: `http://localhost:3232/api/auth/register`.
+3. No corpo da requisição, selecione `raw` e `JSON` e insira:
+   ```json
+   {
+     "username": "novo_usuario",
+     "password": "nova_senha"
+   }
+
+
+4. Clique em Send. Você deverá receber uma mensagem confirmando o registro do usuário.
 
